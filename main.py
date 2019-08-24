@@ -6,16 +6,8 @@
 #
 #
 import datetime
-from enum import Enum
 import os
 import csv
-
-class Days(Enum):
-    M = 1
-    T = 2
-    W = 3
-    TU = 4
-    F = 5
 
 class Student(object):
     def __init__(self, name: str='', classList: list=[]):
@@ -34,6 +26,7 @@ class ClassStruct(object):
 def open_file(fileName: str, studentList: dict) -> dict:
     """ Opens CSV file and reads   """
     try:
+        # todo add comments to this code
         # opens file and uses CSV reader to get each line into a list then iterates through and stores into a dictionary
         file = open(fileName, mode="r")
         fileCSV = csv.reader(file)
@@ -49,14 +42,12 @@ def open_file(fileName: str, studentList: dict) -> dict:
             sMin = int(sMin)
             if tempStartTime[1] == 'PM' and sHour != 12:
                 sHour += 12
-            # print('Start: ' + str(sHour) + ':' + str(sMin))
             tempEndTime = line[4].split(' ')
             eHour, eMin = tempEndTime[0].split(':')
             eHour = int(eHour)
             eMin = int(eMin)
             if tempEndTime[1] == 'PM' and eHour != 12:
                 eHour += 12
-            # print('End:' + str(eHour) + ':' + str(eMin))
             tStart = datetime.time(sHour, sMin)
             tEnd = datetime.time(eHour,eMin)
 
@@ -80,6 +71,7 @@ def find_available(studentList, day, startT, endT ):
                 if max(startT, className.startT) < min(endT, className.endT):
                     available = False
                     print(student, 'has a Conflict with class ', className.name, 'at ', className.startT, className.endT , ' with interval', startT, endT,)
+        #             ToDo clean up output
         if available:
             print(student, 'is available')
 #                 no classes on that day and therefore available
@@ -105,11 +97,10 @@ def getTime(prompt, warning)-> str:
         # if the user just presses enter it catches it
         if data == '':
             print(warning)
-        # if the given input is one of the accepted values
+        # if the given input is in correct format
         elif ':' in data :
             if ' ' in data:
                 if 'AM' or 'PM' in data:
-                    print('true')
                     return data
 
         else:
@@ -130,12 +121,11 @@ def formatTime(time)-> datetime:
 def main():
     studentList = {}
     studentList = open_file('classes.csv', studentList)
-    # for student in studentList:
-    #     for className in studentList[student]:
-    #         print(className.name, className.days, className.startT, className.endT)
 
     running = 1
     while running == 1:
+        # Todo add option to print out those who are available and those who are not
+        # Todo functionalize it to make the code cleaner
         # info for the running or not function
         runPrompt = """      Class Viewer \n
         1. Open Check Conflicts
