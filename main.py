@@ -44,14 +44,14 @@ def open_file(fileName: str) -> dict:
             sMin = int(sMin)
             if tempStartTime[1] == 'PM' and sHour != 12:
                 sHour += 12
-            print('Start: ' + str(sHour) + ':' + str(sMin))
+            # print('Start: ' + str(sHour) + ':' + str(sMin))
             tempEndTime = line[4].split(' ')
             eHour, eMin = tempEndTime[0].split(':')
             eHour = int(eHour)
             eMin = int(eMin)
-            if tempEndTime[1] == 'PM' and sHour != 12:
+            if tempEndTime[1] == 'PM' and eHour != 12:
                 eHour += 12
-            print('End:' + str(eHour) + ':' + str(eMin))
+            # print('End:' + str(eHour) + ':' + str(eMin))
 
 
         file.close()
