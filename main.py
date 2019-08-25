@@ -9,11 +9,6 @@ import datetime
 import os
 import csv
 
-class Student(object):
-    def __init__(self, name: str='', classList: list=[]):
-        self.name = name
-        self.classList = classList
-
 
 class ClassStruct(object):
     def __init__(self, startT , endT, name: str='', days: list = []):
@@ -30,7 +25,6 @@ def open_file(fileName: str, studentList: dict) -> dict:
         # opens file and uses CSV reader to get each line into a list then iterates through and stores into a dictionary
         file = open(fileName, mode="r")
         fileCSV = csv.reader(file)
-        data ={}
         for line in fileCSV:
             tempName = line[0]
             className = line[1]
@@ -63,18 +57,26 @@ def open_file(fileName: str, studentList: dict) -> dict:
     except IOError:
         print("File not found Enter a new file")
 
-def find_available(studentList, day, startT, endT ):
+
+def find_available(studentList, day, startT, endT):
     for student in studentList:
         available = True
         for className in studentList[student]:
             if day in className.days:
                 if max(startT, className.startT) < min(endT, className.endT):
                     available = False
-                    print(student, 'has a Conflict with class ', className.name, 'at ', className.startT, className.endT , ' with interval', startT, endT,)
-        #             ToDo clean up output
         if available:
-            print(student, 'is available')
+            print(student, 'is available during ', startT, '--', endT)
 #                 no classes on that day and therefore available
+
+
+def find_conflicts(studentList, day, startT, endT):
+    for student in studentList:
+        for className in studentList[student]:
+            if day in className.days:
+                if max(startT, className.startT) < min(endT, className.endT):
+                    print(student, ' has a Conflict with ', className.name, ' at ', className.startT, className.endT, ' with interval ', startT, endT,)
+
 
 def getData(prompt, targetData, warning)-> str:
     """Given the prompt and target Data function will run until given data is in target data range"""
@@ -89,6 +91,7 @@ def getData(prompt, targetData, warning)-> str:
             return data
         else:
             print(warning)
+
 
 def getTime(prompt, warning)-> str:
     data =''
@@ -106,12 +109,28 @@ def getTime(prompt, warning)-> str:
         else:
             print(warning)
 
+
+def getDate()-> str:
+    # Day
+    dayPrompt = """      Enter the Day You want to check M-T-W-R-F
+        >>"""
+    dayWarning = "Input Must be one of the following: M-T-W-R-F"
+    dayTarget = "M,T,W,R,F"
+    return getData(dayPrompt, dayTarget, dayWarning)
+
+
+def getInterval(interval:str)-> str:
+    timePrompt = """      Time Range {}? (##:## AM/PM)
+        >> """.format(interval)
+    timeWarning = "Input Must be in the format (12:00 PM) the time separated by :, space, AM or PM "
+    return getTime(timePrompt, timeWarning)
+
+
 def formatTime(time)-> datetime:
     tempTime = time.split(' ')
     hour, min = tempTime[0].split(':')
     hour = int(hour)
     min = int(min)
-
     if tempTime[1] == 'PM' and hour != 12:
         hour += 12
     returnTime = datetime.time(hour, min)
@@ -129,38 +148,37 @@ def main():
         # info for the running or not function
         runPrompt = """      Class Viewer \n
         1. Open Check Conflicts
+        2. Check available
         Q. Quit
     >>"""
-        runWarning = "Input Must be 1 or Q"
-        runTarget = "1,Q"
+        runWarning = 'Input Must be 1 or Q'
+        runTarget = '1,2,Q'
         program = getData(runPrompt, runTarget, runWarning)
-        if program == "1":
+        if program == '1':
             # getting input variables
-            # Day
-            dayPrompt = """      Enter the Day You want to check M-T-W-R-F
-    >>"""
-            dayWarning = "Input Must be one of the following: M-T-W-R-F"
-            dayTarget = "M,T,W,R,F"
-            dayToCheck = getData(dayPrompt, dayTarget, dayWarning)
+            dayToCheck = getDate()
             # start time
-            timePrompt = """      Time Range Start? (##:## AM/PM)
-    >> """
-            timeWarning = "Input Must be in the format (12:00 PM) the time separated by :, space, AM or PM "
-            intervalStart = getTime(timePrompt, timeWarning)
+            intervalStart = getInterval('Start')
             # end time
-            timePrompt = """      Time Range End? (##:## AM/PM)
-    >> """
-            timeWarning = "Input Must be in the format (12:00 PM) the time separated by :, space, AM or PM "
-            intervalEnd = getTime(timePrompt, timeWarning)
+            intervalEnd = getInterval('End')
 
             testStart = formatTime(intervalStart)
             testEnd   = formatTime(intervalEnd)
+            find_conflicts(studentList, dayToCheck, testStart, testEnd)
+        elif program =='2':
+            # getting input variables
+            dayToCheck = getDate()
+            # start time
+            intervalStart = getInterval('Start')
+            # end time
+            intervalEnd = getInterval('End')
+
+            testStart = formatTime(intervalStart)
+            testEnd = formatTime(intervalEnd)
             find_available(studentList, dayToCheck, testStart, testEnd)
 
         else:
             break
-
-
 
 
 main()
