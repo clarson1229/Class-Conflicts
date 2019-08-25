@@ -1,6 +1,8 @@
 # Class-Conflicts
 Project to see who is available during time intervals
-
+# Requirements 
+Must have python installed 
+If not here is the link to install it.  https://www.python.org/downloads/ 
 # To Start 
 Create an excel Doc Formated like the following 
 ![image](https://user-images.githubusercontent.com/27305718/63645499-2b5ec980-c6c5-11e9-8719-6a6f273ba2a0.png)
