@@ -20,3 +20,9 @@ Enter the Day you would like to check and the time interval
 ![image](https://user-images.githubusercontent.com/27305718/63645557-8e049500-c6c6-11e9-88d0-8f769ef596e8.png)
 
 
+# Trouble shooting 
+Make sure that the Excel Doc is formated correctly. 
+- Make sure that in the Days Column all entries are seperated with a dash and are the correct abreviation. 
+- Make sure that the times are in the correct format of ##:## AM/PM    
+-- Make sure none of the times are in military time. 
+-- Make sure there are no trailing Zeros such as 12:00:00 PM 
