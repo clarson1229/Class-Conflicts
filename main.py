@@ -112,10 +112,10 @@ def getTime(prompt, warning)-> str:
 
 def getDate()-> str:
     # Day
-    dayPrompt = """      Enter the Day You want to check M-T-W-R-F
+    dayPrompt = """      Enter the Day You want to check M-T-W-R-F-S
         >>"""
-    dayWarning = "Input Must be one of the following: M-T-W-R-F"
-    dayTarget = "M,T,W,R,F"
+    dayWarning = "Input Must be one of the following: M-T-W-R-F-S"
+    dayTarget = "M,T,W,R,F,S"
     return getData(dayPrompt, dayTarget, dayWarning)
 
 
