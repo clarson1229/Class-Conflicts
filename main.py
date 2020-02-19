@@ -22,6 +22,7 @@ def open_file(fileName: str, studentList: dict) -> dict:
     """ Opens CSV file and reads   """
     try:
         # todo add comments to this code
+        # Todo add error checking if bad input from the excel sheet.
         # opens file and uses CSV reader to get each line into a list then iterates through and stores into a dictionary
         file = open(fileName, mode="r")
         fileCSV = csv.reader(file)
@@ -112,10 +113,10 @@ def getTime(prompt, warning)-> str:
 
 def getDate()-> str:
     # Day
-    dayPrompt = """      Enter the Day You want to check M-T-W-R-F-S
+    dayPrompt = """      Enter the Day You want to check M-T-W-R-F-S-U
         >>"""
-    dayWarning = "Input Must be one of the following: M-T-W-R-F-S"
-    dayTarget = "M,T,W,R,F,S"
+    dayWarning = "Input Must be one of the following: M-T-W-R-F-S-U"
+    dayTarget = "M,T,W,R,F,S,U"
     return getData(dayPrompt, dayTarget, dayWarning)
 
 
